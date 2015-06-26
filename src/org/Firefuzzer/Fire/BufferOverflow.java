@@ -14,6 +14,8 @@ import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Map;
+import java.util.HashMap;
 
 import net.htmlparser.jericho.Attributes;
 import net.htmlparser.jericho.HTMLElementName;
@@ -47,7 +49,7 @@ class BufferOverflow {
 
 
         private static String[] tags = {"form", "input"};
-        private static Map<String, int> countTags = new HashMap<String, int>();
+        private static Map<String, Integer> countTags = new HashMap<String, Integer>();
 
 
 	//private static int countForms = 0;
@@ -81,7 +83,7 @@ class BufferOverflow {
                     if(tags[i] == "form" || tags[i] == "tags") {
                         continue;
                     }
-                    logger.info("Total # of " + tag[i] + " tags: " + countTags.get(tag[i]));
+                    logger.info("Total # of " + tags[i] + " tags: " + countTags.get(tags[i]));
                 }
 
 		logger.info("<<-Categorizing the available data on basis of HTTP Status Codes->>");
@@ -212,8 +214,8 @@ class BufferOverflow {
                     if(tags[i] == "form" || tags[i] == "tags") {
                         continue;
                     }
-                    branches = source.getAllStartTags(tag[i]);
-                    countTags.put(tag[i], branches.size())
+                    branches = source.getAllStartTags(tags[i]);
+                    countTags.put(tags[i], branches.size());
                 }
 
 
