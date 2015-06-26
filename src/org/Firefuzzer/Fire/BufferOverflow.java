@@ -45,8 +45,13 @@ class BufferOverflow {
 
 	private static final Logger logger = Logger.getLogger(BufferOverflow.class);
 
-	private static int countForms = 0;
-	private static int countInputs = 0;
+
+        private static String[] tags = {"form", "input"};
+        private static Map<String, int> countTags = new HashMap<String, int>();
+
+
+	//private static int countForms = 0;
+	//private static int countInputs = 0;
 	private static String var;
 	private static int[] arrayBuffer = new int[5];
 
@@ -57,6 +62,10 @@ class BufferOverflow {
 		for (int i = 0; i < arrayBuffer.length; i++) {
 			arrayBuffer[i] = 0;
 		}
+
+                for(int i = 0; i < tags.length; i++) {
+                    countTags.put(tags[i], 0);
+                }
 	}
 
 	/**
@@ -65,8 +74,16 @@ class BufferOverflow {
 	public void analyzeBufferOverflow() {
 		logger.info("########################################################################################################################");
 		logger.info("<---BUFFER OVERFLOW ANALYSIS--->");
-		logger.info("Total # of Forms: " + countForms);
-		logger.info("Total # of Input tags: " + countInputs);
+
+		logger.info("Total # of Forms: " + countTags.get("form"));
+		logger.info("Total # of Input tags: " + countTags.get("input"));
+                for (int i = 0; i < tags.length; i++) {
+                    if(tags[i] == "form" || tags[i] == "tags") {
+                        continue;
+                    }
+                    logger.info("Total # of " + tag[i] + " tags: " + countTags.get(tag[i]));
+                }
+
 		logger.info("<<-Categorizing the available data on basis of HTTP Status Codes->>");
 		logger.info("Informational Codes 1xx Series: " + arrayBuffer[0]);
 		logger.info("Successful Client Interaction related 2xx Series: "
@@ -100,7 +117,11 @@ class BufferOverflow {
 		StringTokenizer str = new StringTokenizer(data, "#");
 		if (globalDetailFlag)
 			logger.info("Total # of Input Fields: " + str.countTokens());
-		countInputs += str.countTokens();
+
+
+
+                countTags.put("input", countTags.get("input") + str.countTokens());
+		//countInputs += str.countTokens();
 		while (str.hasMoreTokens()) {
 			StringTokenizer strr = new StringTokenizer(str.nextToken(), ",");
 			String attrib = strr.nextToken();
@@ -182,8 +203,21 @@ class BufferOverflow {
 		}
 		int currentForm = 0;
 
-		List<StartTag> branches = source.getAllStartTags(HTMLElementName.FORM);
-		countForms = branches.size();
+		List<StartTag> form_branches = source.getAllStartTags(HTMLElementName.FORM);
+                countTags.put("form", form_branches.size());
+		//countForms = branches.size();
+
+                List<StartTag> branches;
+                for (int i = 0; i < tags.length; i++) {
+                    if(tags[i] == "form" || tags[i] == "tags") {
+                        continue;
+                    }
+                    branches = source.getAllStartTags(tag[i]);
+                    countTags.put(tag[i], branches.size())
+                }
+
+
+
 		logger.info("########################################################################################################################");
 
 		Attributes attr;
@@ -191,7 +225,7 @@ class BufferOverflow {
 		String str = "", pattern = "", temp = "";
 		String[] tempStr = null;
 
-		for (StartTag sj : branches) {
+		for (StartTag sj : form_branches) {
 			currentForm++;
 			attr = sj.getAttributes();
 			data = "";
