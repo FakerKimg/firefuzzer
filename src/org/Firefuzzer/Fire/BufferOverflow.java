@@ -48,7 +48,7 @@ class BufferOverflow {
 	private static final Logger logger = Logger.getLogger(BufferOverflow.class);
 
 
-        private static String[] tags = {"form", "input"};
+        private static String[] tags = {"form", "input", "div"};
         private static Map<String, Integer> countTags = new HashMap<String, Integer>();
 
 

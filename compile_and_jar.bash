@@ -19,3 +19,4 @@ cd ..
 
 rm src/org/Firefuzzer/Fire/*.class
 
+rm -r build/org
