@@ -7,23 +7,15 @@ cp libs/guava/guava-14.0.1.jar build
 
 cp -r src/org build
 
-# rm -r build/org/Firefuzzer/impl/ build/org/Firefuzzer/service/
-
 rm build/org/Firefuzzer/Fire/*.java
 
 cp src/inject.conf src/log4j.properties build
 
-cp ./MANIFEST.MF build
+cd build
 
-jar -cvfm build/Firefuzzer.jar build/MANIFEST.MF build
+jar -cvfm Firefuzzer.jar ../MANIFEST.MF ./
 
-cp build/Firefuzzer.jar ./
+cd ..
 
-rm -r build
-
-mkdir build
-
-mv Firefuzzer.jar build
-
-rm -r src/org/Firefuzzer/Fire/*.class
+rm src/org/Firefuzzer/Fire/*.class
 
